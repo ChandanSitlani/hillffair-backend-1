@@ -46,8 +46,8 @@ def makeclubs():
 		
 @app.route('/feed',methos=['POST'])
 def feedp():
-	firebase_id=request.form.firebase_id
-	image_url=request.form.image_url
+	firebase_id=request.form['firebase_id']
+	image_url=request.form['image_url']
 	#what id?
 	query="INSERT INTO wall VALUES (NULL,'"+firebase_id+"',0'"+image_url+"'"
 	cursor.execute(query)
@@ -57,8 +57,8 @@ def feedp():
 @app.route('/quiz/answers',methods=['POST'])
 def quiz_answers():
 	points=0
-	firebase_id=request.form.firebase_id
-	answers=request.form.answers
+	firebase_id=request.form['firebase_id']
+	answers=request.form['answers']
 	#answers is object array according to documentation
 	#for loop for each answer
 	for in range(0,answers.length):
@@ -105,7 +105,7 @@ def fid(firebase_id):
 
 @app.route('/feed',methods=['POST'])
 def feed():
-    feed,firebase_id=request.form.feed #todo
+    feed,firebase_id=request.form['feed'] #todo
     return {"status_code":200}
 
 @app.route('/feed',methods=['GET'])
@@ -115,8 +115,8 @@ def feedg():
     
 @app.route('/like',methods=['POST'])#FIX THIS
 def like():
-    firebase_id=request.form.firebase_id
-    image_url=request.form.image_url        #use?
+    firebase_id=request.form['firebase_id']
+    image_url=request.form['image_url']        #use?
     query="UPDATE wall SET likes=likes+1 WHERE firebase_id='"+firebase_id+"'"
     cursor.execute(query)
     connection.commit()
@@ -129,7 +129,7 @@ app.add_url_rule('/faceSmash', 'faceSmash.faceSmash', faceSmash.faceSmash, metho
 
 @app.route('/quiz/questions',methods=['POST'])
 def quiz():
-    category=request.form.category
+    category=request.form['category']
     query="SELECT id,ques,option1,option2,option3,option4 FROM quiz ORDER BY RAND() LIMIT 10 AS ques WHERE category='"+category+"'"
     cursor.execute(query)
     questions=cursor.fetchall()
@@ -186,8 +186,8 @@ def leaderboard():
     
 @app.route('/rewards',methods=['POST'])
 def rewards():
-    firebase_id=request.form.firebase_id
-    candies=request.form.sub_candies
+    firebase_id=request.form['firebase_id']
+    candies=request.form['sub_candies']
     query="UPDATE profile SET points=points-'"+candies+"' WHERE firebase_id='"+firebase_id+"'"
 	return {"status_code":200}# not in docs
     
